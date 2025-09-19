@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block title %}Panel pracownika{% endblock %}
+{% block content %}
+<div class="container-fluid">
+  <div class="row" style="height: calc(100vh - 110px);"> <!-- pełna wysokość minus navbar/padding -->
+    <!-- Lewy sidebar -->
+    <div class="col-12 col-md-3 col-lg-2 h-100">
+      {% include "_partials/sidebar.html" %}
+    </div>
+
+    <!-- Kolumna główna -->
+    <div class="col-12 col-md-9 col-lg-10 d-flex flex-column h-100">
+      <div class="row g-3 flex-grow-1 overflow-auto">
+        <!-- Kalendarz (duży box) -->
+        <div class="col-lg-8">
+          <div class="p-3 bg-white border rounded-3 shadow-sm h-100 d-flex flex-column">
+            <h2 class="h5 mb-3">Kalendarz</h2>
+            <div class="flex-grow-1 overflow-auto pe-2">
+              <ul class="mb-0 small">
+                <li>📅 07.09 – Spotkanie projektowe</li>
+                <li>📅 09.09 – Badanie materiału</li>
+                <li>📅 12.09 – Wizyta u klienta</li>
+                <li>📅 15.09 – Odbiór próbek</li>
+                <li>📅 18.09 – Korekta protokołu</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Prawa kolumna (2 boxy: Zadania + Notatnik) -->
+        <div class="col-lg-4 d-flex flex-column gap-3">
+          <div class="p-3 bg-white border rounded-3 shadow-sm h-100 d-flex flex-column">
+            <h2 class="h6 mb-3">Do zrobienia</h2>
+            <div class="flex-grow-1 overflow-auto">
+              <ul class="list-unstyled mb-3">
+                <li><input class="form-check-input me-2" type="checkbox"> Zadanie 1</li>
+                <li><input class="form-check-input me-2" type="checkbox"> Zadanie 2</li>
+                <li><input class="form-check-input me-2" type="checkbox"> Zadanie 3</li>
+              </ul>
+            </div>
+            <a class="btn btn-warning text-white align-self-start" href="{{ url_for('staff.tasks') }}">Dodaj zadanie</a>
+          </div>
+
+          <div class="p-3 bg-white border rounded-3 shadow-sm h-100 d-flex flex-column">
+            <h2 class="h6 mb-3">Notatnik firmowy</h2>
+            <div class="flex-grow-1 overflow-auto border rounded p-3 bg-light">
+              <p class="mb-0">📄 Obecne notatki...</p>
+            </div>
+            <a class="btn btn-warning text-white align-self-start mt-3" href="{{ url_for('staff.notes') }}">Dodaj notatkę</a>
+          </div>
+        </div>
+
+        <!-- Szybkie przyciski (siatka) -->
+        <div class="col-lg-8">
+          <div class="p-3 bg-white border rounded-3 shadow-sm">
+            <div class="row g-2">
+              <div class="col-6 col-md-4 col-lg-3"><a class="btn btn-warning w-100 text-white">+ Protokół</a></div>
+              <div class="col-6 col-md-4 col-lg-3"><a class="btn btn-warning w-100 text-white">+ Badanie</a></div>
+              <div class="col-6 col-md-4 col-lg-3"><a class="btn btn-warning w-100 text-white">+ Labownik</a></div>
+              <div class="col-6 col-md-4 col-lg-3"><a class="btn btn-warning w-100 text-white">+ Próbka</a></div>
+              <div class="col-6 col-md-4 col-lg-3"><a class="btn btn-warning w-100 text-white">+ Faktura</a></div>
+              <div class="col-6 col-md-4 col-lg-3"><a class="btn btn-warning w-100 text-white">+ Kalendarz</a></div>
+              <div class="col-6 col-md-4 col-lg-3"><a class="btn btn-warning w-100 text-white">+ Korekta</a></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pasek gradientu na dole kolumny głównej -->
+      <div class="gradient-bar mt-3"></div>
+    </div>
+  </div>
+</div>
+{% endblock %}

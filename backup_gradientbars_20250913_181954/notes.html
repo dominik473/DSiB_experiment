@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}Notatki firmowe{% endblock %}
+{% block content %}
+<div class="container-fluid">
+  <div class="row" style="height: calc(100vh - 110px);">
+    <!-- Sidebar -->
+    <div class="col-12 col-md-3 col-lg-2 h-100">
+      {% include "_partials/sidebar.html" %}
+    </div>
+
+    <!-- Główna -->
+    <div class="col-12 col-md-9 col-lg-10 d-flex flex-column h-100">
+      <div class="d-flex align-items-center justify-content-between mb-3">
+        <h2 class="h5 mb-0">Notatki firmowe</h2>
+        <a class="btn btn-warning text-white" href="#">Dodaj notatkę</a>
+      </div>
+
+      <div class="flex-grow-1 overflow-auto pe-2">
+        <div class="row g-3">
+          {% for n in notes %}
+          <div class="col-12 col-md-6 col-lg-4">
+            <article class="card shadow-sm h-100" style="border-radius: 20px;">
+              <div class="card-body">
+                <h3 class="h6 fw-semibold text-truncate">{{ n.title }}</h3>
+                <p class="small text-muted mb-4" style="-webkit-line-clamp:5;display:-webkit-box;-webkit-box-orient:vertical;overflow:hidden;">
+                  {{ n.body }}
+                </p>
+                <div class="d-flex justify-content-between align-items-center">
+                  <span class="tag-pill">{{ n.tag }}</span>
+                  <a class="btn btn-sm btn-outline-secondary" href="{{ url_for('staff.note_details', note_id=n.id) }}">Otwórz</a>
+                </div>
+              </div>
+            </article>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="gradient-bar mt-3"></div>
+    </div>
+  </div>
+</div>
+{% endblock %}

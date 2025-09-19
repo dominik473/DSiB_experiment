@@ -1,0 +1,18 @@
+.venv/
+__pycache__/
+instance/
+*.sqlite
+*.pyc
+.env
+
+# Python / Flask
+.idea/
+.DS_Store
+
+# Sekrety i lokalne dane
+*.sqlite3
+*.db
+
+# Front build (jeśli kiedyś)
+node_modules/
+dist/

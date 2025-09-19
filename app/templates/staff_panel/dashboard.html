@@ -1,0 +1,99 @@
+﻿{% extends "base.html" %}
+{% block title %}Panel pracownika{% endblock %}
+{% block content %}
+<div class="container-fluid px-0 dashboard-viewport">   {# fixed viewport #}
+  <div class="dashboard-shell">                         {# NOWE: daje odstęp top/bottom #}
+
+    <div class="row g-0 h-100">
+      <!-- Sidebar -->
+      <div class="col-12 col-md-3 col-lg-2 h-100 d-flex flex-column px-0">
+        {% include "_partials/sidebar.html" %}
+      </div>
+
+      <!-- Main -->
+      <div class="col-12 col-md-9 col-lg-10 d-flex flex-column h-100">
+        <div class="dashboard-grid flex-grow-1">
+
+                <!-- KALENDARZ: lewa, górna (8/12) -->
+                <div class="grid-calendar">
+                    <div class="card h-100">
+                        <div class="card-body d-flex flex-column"><h2 class="h5 mb-3">Kalendarz</h2>
+                            <div class="flex-grow-1 overflow-auto pe-2">
+                                <ul class="small mb-0"> {% for e in upcoming %}
+                                    <li>📅 {{ e.due_at.strftime("%d.%m") if e.due_at }} – {{ e.text }}</li>
+                                    {% else %}
+                                    <li class="text-muted">Brak nadchodzących pozycji.</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- Do zrobienia -->
+                <div class="grid-tasks">
+                    <div class="card h-100">
+                        <div class="card-body d-flex flex-column overflow-hidden"><h2 class="h6 mb-3">Do zrobienia</h2>
+                            <div class="flex-grow-1 overflow-auto pe-2 mb-3">
+                                <ul class="list-unstyled mb-0"> {% for t in tasks %}
+                                    <li class="mb-2 d-flex align-items-center">
+                                        <form method="post" action="{{ url_for('staff.toggle_task', task_id=t.id) }}"
+                                              class="me-2"><input class="form-check-input" type="checkbox"
+                                                                  onChange="this.form.submit()" {% if t.done %}checked{%
+                                                                  endif %}></form>
+                                        <span class="text-truncate {% if t.done %}text-decoration-line-through text-muted{% endif %}"> {{ t.text }} </span>
+                                    </li>
+                                    {% else %}
+                                    <li class="text-muted">Brak zadań.</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+
+                            <a class="btn btn-warning text-white align-self-start" href="#">Dodaj zadanie</a></div>
+                    </div>
+                </div>
+
+
+                <!-- Notatnik firmowy -->
+                <div class="grid-notes">
+                    <div class="card h-100">
+                        <div class="card-body d-flex flex-column overflow-hidden"><h2 class="h6 mb-3">Notatnik
+                            firmowy</h2>
+                            <div class="flex-grow-1 overflow-auto border rounded p-3 bg-light"> {% if notes %}
+                                <ul class="small mb-0"> {% for n in notes %}
+                                    <li class="mb-1"><strong>{{ n.title }}</strong> — {{ n.tag or "—" }}</li>
+                                    {% endfor %}
+                                </ul>
+                                {% else %} <p class="small text-muted mb-0">📄 Obecne notatki…</p> {% endif %}
+                            </div>
+                            <a class="btn btn-warning text-white align-self-start mt-3" href="#">Dodaj notatkę</a></div>
+                    </div>
+                </div>
+
+
+                <!-- SZYBKIE AKCJE: pod kalendarzem (8/12) -->
+                <div class="grid-quick">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <div class="row g-2 row-cols-2 row-cols-md-3 row-cols-lg-4">
+                                <div class="col"><a class="btn btn-outline-brand w-100">+ Protokół</a></div>
+                                <div class="col"><a class="btn btn-outline-brand w-100">+ Badanie</a></div>
+                                <div class="col"><a class="btn btn-outline-brand w-100">+ Labownik</a></div>
+                                <div class="col"><a class="btn btn-outline-brand w-100">+ Próbka</a></div>
+                                <div class="col"><a class="btn btn-outline-brand w-100">+ Faktura</a></div>
+                                <div class="col"><a class="btn btn-outline-brand w-100">+ Kalendarz</a></div>
+                                <div class="col"><a class="btn btn-outline-brand w-100">+ Korekta</a></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}
