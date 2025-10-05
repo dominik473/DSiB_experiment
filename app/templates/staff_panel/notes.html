@@ -8,11 +8,11 @@
       {% include "_partials/sidebar.html" %}
     </div>
 
-    <!-- GĹ‚Ăłwna -->
+    <!-- Główna -->
     <div class="col-12 col-md-9 col-lg-10 d-flex flex-column h-100">
       <div class="d-flex align-items-center justify-content-between mb-3">
         <h2 class="h5 mb-0">Notatki firmowe</h2>
-        <a class="btn btn-warning text-white" href="#">Dodaj notatkÄ™</a>
+        <a class="btn btn-warning text-white" href="{{ url_for('staff.create_note') }}">Dodaj notatkę</a>
       </div>
 
       <div class="flex-grow-1 overflow-auto pe-2">
@@ -25,9 +25,8 @@
                 <p class="small text-muted mb-4" style="-webkit-line-clamp:5;display:-webkit-box;-webkit-box-orient:vertical;overflow:hidden;">
                   {{ n.body }}
                 </p>
-                <div class="d-flex justify-content-between align-items-center">
-                  <span class="tag-pill">{{ n.tag }}</span>
-                  <a class="btn btn-sm btn-outline-secondary" href="{{ url_for('staff.note_details', note_id=n.id) }}">OtwĂłrz</a>
+                <div class="d-flex justify-content-end">
+                  <a class="btn btn-sm btn-outline-secondary" href="{{ url_for('staff.note_details', note_id=n.id) }}">Otwórz</a>
                 </div>
               </div>
             </article>
@@ -40,4 +39,3 @@
   </div>
 </div>
 {% endblock %}
-

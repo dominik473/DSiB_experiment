@@ -1,39 +1,53 @@
+# app/__init__.py
 import os
 from flask import Flask
 from dotenv import load_dotenv
-from .extensions import db, migrate, login_manager
-from .blueprints.public import bp as public_bp
-from .blueprints.auth import bp as auth_bp
-from .blueprints.staff_panel import bp as staff_bp
-from .blueprints.client_portal import bp as client_bp
-from .cli import register_cli
+
+from app.extensions import db, migrate, login_manager
+from app.cli import register_cli
+
 
 def create_app(config_object="config.DevConfig"):
-    app = Flask(__name__, instance_relative_config=True, static_folder="static", template_folder="templates")
-    app.config.from_object(config_object)
-    app.config["CALENDAR_ID_1"] = os.getenv("CALENDAR_ID_1")
-    app.config["CALENDAR_ID_2"] = os.getenv("CALENDAR_ID_2")
-    app.config["CALENDAR_ID_3"] = os.getenv("CALENDAR_ID_3")
-    app.config["CALENDAR_ID_EDITABLE"] = os.getenv("CALENDAR_ID_EDITABLE")
+    load_dotenv()
 
+    flask_app = Flask(
+        __name__,
+        instance_relative_config=True,
+        static_folder="static",
+        template_folder="templates",
+    )
+    flask_app.config.from_object(config_object)
 
+    # Google Calendar (z .env)
+    flask_app.config["CALENDAR_ID_1"] = os.getenv("CALENDAR_ID_1")
+    flask_app.config["CALENDAR_ID_2"] = os.getenv("CALENDAR_ID_2")
+    flask_app.config["CALENDAR_ID_3"] = os.getenv("CALENDAR_ID_3")
+    flask_app.config["CALENDAR_ID_EDITABLE"] = os.getenv("CALENDAR_ID_EDITABLE")
 
-    # Upewnij się, że katalog instance istnieje (dla SQLite)
-    try:
-        os.makedirs(app.instance_path, exist_ok=True)
-    except OSError:
-        pass
+    os.makedirs(flask_app.instance_path, exist_ok=True)
 
     # Ext
-    db.init_app(app)
-    migrate.init_app(app, db)
-    login_manager.init_app(app)
-    register_cli(app)
+    db.init_app(flask_app)
+    migrate.init_app(flask_app, db)
+    login_manager.init_app(flask_app)
+    login_manager.login_view = "auth.login"
+    login_manager.login_message_category = "warning"
 
-    # Blueprints
-    app.register_blueprint(public_bp)
-    app.register_blueprint(auth_bp, url_prefix="/auth")
-    app.register_blueprint(staff_bp, url_prefix="/staff")
-    app.register_blueprint(client_bp, url_prefix="/client")
+    register_cli(flask_app)
 
-    return app
+    # Wczytaj modele, żeby Alembic widział metadata
+    import app.models  # noqa: F401
+
+    # Import blueprintów DOPIERO teraz (lazy import)
+    from app.blueprints.public import bp as public_bp
+    from app.blueprints.auth import bp as auth_bp
+    from app.blueprints.staff_panel import bp as staff_bp
+    from app.blueprints.client_portal import bp as client_bp
+
+    # Rejestracja BP NA INSTANCJI (flask_app), NIE na pakiecie 'app'
+    flask_app.register_blueprint(public_bp)
+    flask_app.register_blueprint(auth_bp, url_prefix="/auth")
+    flask_app.register_blueprint(staff_bp, url_prefix="/staff")
+    flask_app.register_blueprint(client_bp, url_prefix="/client")
+
+    return flask_app

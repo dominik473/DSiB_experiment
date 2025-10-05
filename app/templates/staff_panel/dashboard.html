@@ -14,24 +14,38 @@
       <div class="col-12 col-md-9 col-lg-10 d-flex flex-column h-100">
         <div class="dashboard-grid flex-grow-1">
 
-                <!-- KALENDARZ: lewa, górna (8/12) -->
-                <div class="grid-calendar">
-                    <div class="card h-100">
-                        <div class="card-body d-flex flex-column"><h2 class="h5 mb-3">Kalendarz</h2>
-                            <div class="flex-grow-1 overflow-auto pe-2">
-                                <ul class="small mb-0"> {% for e in upcoming %}
-                                    <li>📅 {{ e.due_at.strftime("%d.%m") if e.due_at }} – {{ e.text }}</li>
-                                    {% else %}
-                                    <li class="text-muted">Brak nadchodzących pozycji.</li>
-                                    {% endfor %}
-                                </ul>
-                            </div>
+            <!-- KALENDARZ: lewa, górna (8/12) -->
+            <div class="grid-calendar">
+                <div class="card h-100">
+                    <div class="card-body d-flex flex-column p-3">
+                        <div class="d-flex align-items-center justify-content-between mb-2">
+                            <h5 class="mb-0 fw-bold">Kalendarz</h5>
+                            <a class="btn btn-outline-brand btn-sm"
+                               target="_blank" rel="noopener"
+                               href="https://calendar.google.com/calendar/u/0/r/eventedit?src={{ cal_edit | urlencode }}&ctz=Europe/Warsaw">
+                                + Wydarzenie
+                            </a>
+                        </div>
+
+                        <div class="ratio ratio-16x9 flex-grow-1">
+<iframe
+    style="border:0;width:100%;height:100%"
+    frameborder="0"
+    scrolling="no"
+    src="https://calendar.google.com/calendar/embed?mode=WEEK&wkst=2&ctz=Europe%2FWarsaw&hl=pl
+&showTitle=0&showTabs=0&showPrint=0&showCalendars=1
+&src={{ cal1 | urlencode }}&color=%234285F4
+&src={{ cal2 | urlencode }}&color=%238E24AA
+&src={{ cal3 | urlencode }}&color=%23B1365F
+">
+</iframe>                            </iframe>
                         </div>
                     </div>
                 </div>
+            </div>
 
 
-                <!-- Do zrobienia -->
+            <!-- Do zrobienia -->
                 <div class="grid-tasks">
                     <div class="card h-100">
                         <div class="card-body d-flex flex-column overflow-hidden"><h2 class="h6 mb-3">Do zrobienia</h2>

@@ -10,14 +10,16 @@
     <div class="col-12 col-md-9 col-lg-10 d-flex flex-column h-100">
       <div class="d-flex align-items-center justify-content-between mb-3">
         <h2 class="h5 mb-0">Zadania</h2>
-        <a class="btn btn-warning text-white" href="#">+ Zadanie</a>
+        <a class="btn btn-warning text-white" href="{{ url_for('staff.create_task') }}">+ Zadanie</a>
       </div>
 
       <div class="flex-grow-1 overflow-auto">
         <ul class="list-group shadow-sm">
           {% for t in tasks %}
           <li class="list-group-item d-flex align-items-center">
-            <input class="form-check-input me-3" type="checkbox" {% if t.done %}checked{% endif %}>
+            <form method="post" action="{{ url_for('staff.toggle_task', task_id=t.id) }}" class="me-3">
+              <input class="form-check-input" type="checkbox" onChange="this.form.submit()" {% if t.done %}checked{% endif %}>
+            </form>
             <span class="flex-grow-1 text-truncate {% if t.done %}text-decoration-line-through text-muted{% endif %}">
               {{ t.text }}
             </span>
@@ -30,4 +32,3 @@
   </div>
 </div>
 {% endblock %}
-
