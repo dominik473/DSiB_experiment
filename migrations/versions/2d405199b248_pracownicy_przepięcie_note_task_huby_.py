@@ -91,17 +91,7 @@ def upgrade():
     )
 
     # 5) HUB NUMERÓW KOSTEK
-    op.create_table(
-        "licznik_tech_kostki",
-        sa.Column("id", sa.Integer(), primary_key=True, autoincrement=True),
-        sa.Column("seq", sa.Integer(), nullable=False),
-        sa.Column("nr_kostki", sa.String(length=64), nullable=False),
-        sa.Column("status_vr", sa.Boolean(), server_default=sa.text("0"), nullable=False),
-    )
-    op.create_unique_constraint("uq_licznik_tech_kostki_seq", "licznik_tech_kostki", ["seq"])
-    op.create_unique_constraint("uq_licznik_tech_kostki_nr", "licznik_tech_kostki", ["nr_kostki"])
-
-    # 6) DROP legacy USER (u Ciebie 0 rekordów)
+     # 6) DROP legacy USER (u Ciebie 0 rekordów)
     # Najpierw upewniliśmy się, że żadne FK już nie wskazują na 'user'.
     op.execute("DROP TABLE IF EXISTS user")
 
@@ -119,10 +109,6 @@ def downgrade():
     )
     op.create_index("ix_user_email", "user", ["email"], unique=True)
 
-    # Usunięcie hubów
-    op.drop_constraint("uq_licznik_tech_kostki_nr", "licznik_tech_kostki", type_="unique")
-    op.drop_constraint("uq_licznik_tech_kostki_seq", "licznik_tech_kostki", type_="unique")
-    op.drop_table("licznik_tech_kostki")
 
     op.drop_constraint("uq_licznik_tech_prot_nr_rok_tydz_seq", "licznik_tech_prot", type_="unique")
     op.drop_table("licznik_tech_prot")
